@@ -28,3 +28,9 @@
 ```bash
 git clone https://github.com/devl2/TaxiService
 cd taxi-service
+```
+
+### 2. Запуск через Docker
+```
+docker compose up -d 
+```
