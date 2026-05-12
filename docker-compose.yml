@@ -1,0 +1,130 @@
+services:
+
+  postgres:
+    image: postgres:15
+    container_name: taxi
+
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_DB: taxi_db
+
+    ports:
+      - "5433:5432"
+
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+
+    ports:
+      - "6500:5672"     # AMQP
+      - "15672:15672"   # UI
+
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  user-service:
+    build: ./user-service
+    container_name: user-service
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/user_service
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 12345
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PORT: 6379
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+
+    ports:
+      - "8081:8081"
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  trip-service:
+    build: ./trip-service
+    container_name: trip-service
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/trip_service
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 12345
+      JWT_SECRET: "ma7xHT20x6nlhzzK4XKWvF0CA1rHcBo+W1tL8ITQQU8="
+      JWT_EXPIRATION: 86400000
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+
+    ports:
+      - "8082:8082"
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  worker-service:
+    build: ./worker-service
+    container_name: worker-service
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/worker_service
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 12345
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+
+    ports:
+      - "8083:8083"
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  auth-service:
+    build: ./auth-service
+    container_name: auth-service
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/auth_service
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 12345
+      JWT_SECRET: "ma7xHT20x6nlhzzK4XKWvF0CA1rHcBo+W1tL8ITQQU8="
+      JWT_EXPIRATION: 86400000
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+
+    ports:
+      - "8084:8084"
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  pgdata:

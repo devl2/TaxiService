@@ -1,0 +1,11 @@
+com\example\worker_service\entity\Notification.class
+com\example\worker_service\repository\NotificationRepository.class
+com\example\worker_service\service\NotificationService$Worker.class
+com\example\worker_service\WorkerServiceApplication.class
+com\example\worker_service\service\NotificationService.class
+com\example\worker_service\dto\Notification.class
+com\example\worker_service\listener\TripStatusChangedListener$TripStatusChangedEvent.class
+com\example\worker_service\listener\TripStatusChangedListener.class
+com\example\worker_service\dto\NotificationRequest.class
+com\example\worker_service\cfg\RabbitConfig.class
+com\example\worker_service\controller\NotificationController.class

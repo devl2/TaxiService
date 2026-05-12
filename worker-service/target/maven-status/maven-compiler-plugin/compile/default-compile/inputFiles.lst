@@ -1,0 +1,9 @@
+C:\Users\zxc\OpenideProjects\MyyTAXI\worker-service\src\main\java\com\example\worker_service\cfg\RabbitConfig.java
+C:\Users\zxc\OpenideProjects\MyyTAXI\worker-service\src\main\java\com\example\worker_service\controller\NotificationController.java
+C:\Users\zxc\OpenideProjects\MyyTAXI\worker-service\src\main\java\com\example\worker_service\dto\Notification.java
+C:\Users\zxc\OpenideProjects\MyyTAXI\worker-service\src\main\java\com\example\worker_service\dto\NotificationRequest.java
+C:\Users\zxc\OpenideProjects\MyyTAXI\worker-service\src\main\java\com\example\worker_service\entity\Notification.java
+C:\Users\zxc\OpenideProjects\MyyTAXI\worker-service\src\main\java\com\example\worker_service\listener\TripStatusChangedListener.java
+C:\Users\zxc\OpenideProjects\MyyTAXI\worker-service\src\main\java\com\example\worker_service\repository\NotificationRepository.java
+C:\Users\zxc\OpenideProjects\MyyTAXI\worker-service\src\main\java\com\example\worker_service\service\NotificationService.java
+C:\Users\zxc\OpenideProjects\MyyTAXI\worker-service\src\main\java\com\example\worker_service\WorkerServiceApplication.java
